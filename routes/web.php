@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,18 +15,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PostController::class, 'index'])->middleware(['auth', 'verified'])->name('posts.index');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
 require __DIR__.'/auth.php';
+
+// Route::get('/posts', [PostController::class, 'index'])->middleware(['auth', 'verified'])->name('posts.index');
+
+// Route::get('/posts/create', [PostCntroller::class, 'create'])->middleware(['auth', 'verified'])->name('posts.create');
+
+// Route::post('/posts', [PostCntroller::class, 'store'])->midlleware(['auth', 'verified'])->name('posts.store');
+
+// Route::get('/posts/{post}', [PostCntroller::class, 'show'])->middleware(['auth', 'verified'])->name('posts.show');
+
+// Route::get('/posts/{post}/edit', [PostCntroller::class, 'edit'])->middleware(['auth', 'verified'])->name('posts.edit');
+
+// ROute::patch('/posts/{post}', [PostCntroller::class, 'update'])->middleware(['auth', 'verified'])->name('postas.update');
+
+// Route::delete('/posts/{post}', [PostCntroller::class, 'destroy'])->middleware(['auth', 'verified'])->name('posts.destroy');
+
+Route::resource('posts', PostController::class)->middleware(['auth', 'verified']);
